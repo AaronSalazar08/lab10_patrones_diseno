@@ -11,6 +11,9 @@ use App\Observers\Concretos\WebhookSenasa;
 use App\Observers\RegistroPesoSubject;
 use App\Repositories\EloquentAnimalRepository;
 use App\Repositories\IAnimalRepository;
+use App\Services\EstimadorPesoService;
+use App\Strategies\Concretas\AlgoritmoYolov8;
+use App\Strategies\EstimadorFactory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,6 +40,14 @@ class AppServiceProvider extends ServiceProvider
 
             return $subject;
         });
+
+        // Patrón Strategy — nuevo
+        // Por defecto usa YOLOv8; el controlador puede cambiarlo en runtime
+        $this->app->bind(EstimadorPesoService::class, function () {
+            return new EstimadorPesoService(new AlgoritmoYolov8);
+        });
+
+        $this->app->singleton(EstimadorFactory::class, EstimadorFactory::class);
     }
 
     public function boot(): void

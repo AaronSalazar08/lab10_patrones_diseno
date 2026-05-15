@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\EstimadorController;
 use App\Http\Controllers\RanchoController;
 use App\Http\Controllers\RegistroPesoController;
 use Illuminate\Support\Facades\Route;
@@ -17,3 +18,7 @@ Route::delete('/animales/{id}', [RanchoController::class, 'destroy']);
 
 // Patrón Observer
 Route::post('/registros-peso', [RegistroPesoController::class, 'store']);
+
+// Patrón Strategy
+Route::post('/estimaciones', [EstimadorController::class, 'estimar']);
+Route::post('/estimaciones/fallback', [EstimadorController::class, 'estimarConFallback']);
